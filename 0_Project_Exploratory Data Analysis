@@ -1,1 +1,309 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# import the library\n",
+    "%matplotlib inline\n",
+    "\n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import scipy\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "# the more advanced python visualization library\n",
+    "import seaborn as sns\n",
+    "\n",
+    "# apply style to all the charts\n",
+    "sns.set_style('whitegrid')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load the data\n",
+    "df = pd.read_csv('../../data/processed/Users/jeromepotvin/Desktop/PERSONNEL JEROME/CONCORDIA/1260_BIG DATA/PROJECT/DATA EXPLORATORY/DATASETS/1_FINAL CUSTOMER SALES_16_17.csv\n",
+    "df = pd.read_csv('../../data/processed/Users/jeromepotvin/Desktop/PERSONNEL JEROME/CONCORDIA/1260_BIG DATA/PROJECT/DATA EXPLORATORY/DATASETS/1_HOUSING Permits by type 2017.csv\n",
+    "df = pd.read_csv('../../data/processed/Users/jeromepotvin/Desktop/PERSONNEL JEROME/CONCORDIA/1260_BIG DATA/PROJECT/DATA EXPLORATORY/DATASETS/1_Housing starts Quebec 2017.csv\n",
+    "df = pd.read_csv('../../data/processed/Users/jeromepotvin/Desktop/PERSONNEL JEROME/CONCORDIA/1260_BIG DATA/PROJECT/DATA EXPLORATORY/DATASETS/1_SIC CODE_CUST_IND_CRM DATA.csv\n",
+    "                 df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# One Variable (numeric)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Analize sales 2017 vs 2016 as a %VARIANCE VS LY by Market Segement\n",
+    "\n",
+    "# Hisotgram\n",
+    "print(df['2017'].describe().round())\n",
+    "plt.hist(df['2017'], bins=100)\n",
+    "plt.show()\n",
+    "# Box plot\n",
+    "plt.boxplot(df['2017'])\n",
+    "plt.xticks([1], ['2017'], rotation='horizontal')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# One Variable (categorical)¶"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Product Family Desc sales\n",
+    "print(df['Product Family Desc'].value())\n",
+    "\n",
+    "# Bar Chart\n",
+    "plt.figure(figsize=(12,6))\n",
+    "plt.title('# sales by Product Family Desc')\n",
+    "plt.xlabel('2017')\n",
+    "plt.ylabel('# Product Family Desc')\n",
+    "\n",
+    "labels = df['Product Family Desc'].value_counts().index\n",
+    "values = df['Product Family Desc'].value_counts().values\n",
+    "\n",
+    "y_pos = range(len(labels))\n",
+    "plt.bar(y_pos, values, align='center', alpha=0.5)\n",
+    "plt.xticks(y_pos, labels)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Market Segment Desc (Ship to) sales \n",
+    "print(df['Market Segment Desc (Ship to)'].value_counts())\n",
+    "\n",
+    "# Bar Chart\n",
+    "plt.figure(figsize=(12,6))\n",
+    "plt.title('# Sales by Market Segment Desc (Ship to)')\n",
+    "plt.xlabel('2017')\n",
+    "plt.ylabel('Market Segment Desc (Ship to)')\n",
+    "\n",
+    "labels = df['Market Segment Desc (Ship to)'].value_counts().index\n",
+    "values = df['Market Segment Desc (Ship to)'].value_counts().values\n",
+    "\n",
+    "y_pos = range(len(labels))\n",
+    "plt.bar(y_pos, values, align='center', alpha=0.5)\n",
+    "plt.xticks(y_pos, labels)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Multiple variables (Numeric x Numeric)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Correlation\n",
+    "df.corr()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# heatmap\n",
+    "corrmat = df.corr()\n",
+    "f, ax = plt.subplots(figsize=(12, 9))\n",
+    "sns.heatmap(corrmat, vmax=.8, square=True)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Visualization of the correlation between market segment x Product Family Desc x housing starts x Housing permits\n",
+    "\n",
+    "plt.figure(figsize=(10,10))\n",
+    "plt.xlabel('Market Segment Desc (Ship to)')\n",
+    "plt.ylabel('Product Family Desc')\n",
+    "plt.ylabel('1_Housing starts Quebec 2017.csv') \n",
+    "plt.ylabel('1_HOUSING Permits by type 2017.csv') \n",
+    "\n",
+    "plt.plot(df['Market Segment Desc (Ship to)'], df['Product Family Desc], 'o', alpha=0.3)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Multiple variables (Categorical x Numeric)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Box plot to show the distribution Market Segment Desc (Ship to) x sales\n",
+    "values = []\n",
+    "labels = []\n",
+    "for ms in sorted(df['Market Segment Desc (Ship to)'].unique()):\n",
+    "    labels.append(bdr)\n",
+    "    values.append(df[df['Market Segment Desc (Ship to)']==MSD]['sales 2017'])\n",
+    "\n",
+    "plt.boxplot(values)\n",
+    "plt.xticks(range(1,len(labels)+1), labels, rotation='horizontal')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Multiple variables (Categorical x Categorical)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Count of Product Family Desc by Market Segment Desc (Ship to) and customer\n",
+    "\n",
+    "n_Product Family Desc = [1,2,3,4,5,6,7,8,9,10,11,12,13]\n",
+    "Market Segment Desc (Ship to) = df['Market Segment Desc (Ship to)'].unique()\n",
+    "r = range(len(Market Segment Desc (Ship to)))\n",
+    "\n",
+    "df_group = df.groupby(['Market Segment Desc (Ship to)', 'Product Family Desc'])['id'].count().reset_index()\n",
+    "df_group = df.pivot_table(index='Market Segment Desc (Ship to)', columns = 'Product Family Desc', values='id')\n",
+    "df_group = df_group[[1,2,3,4,5,6,7,8,9,10,11,12,13]]\n",
+    "df_group.columns = ['1MS',2MS','3MS','4MS','5MS','5MS','7MS','8MS','9MS','10MS',''11MS','12MS''13MS']\n",
+    "df_group = df_group.sort_values(['1MS',2MS','3MS','4MS','5MS','5MS','7MS','8MS','9MS','10MS',''11MS','12MS''13MS'])\n",
+    "\n",
+    "raw_data = {'1MS': df_group['1MS'].values,\n",
+    "            '2MS': df_group['2MS'].values, \n",
+    "            '3MS': df_group['3MS'].values, \n",
+    "            '4MS': df_group['4MS'].values,\n",
+    "            '5MS': df_group['2MS'].values,\n",
+    "            '6MS': df_group['6MS'].values,\n",
+    "            '6MS': df_group['7MS'].values,\n",
+    "            '8MS': df_group['8MS'].values,\n",
+    "            '9MS': df_group['9MS'].values,\n",
+    "            '10MS': df_group['10MS'].values,\n",
+    "            '11S': df_group['11MS'].values,\n",
+    "            '12MS': df_group['12MS'].values,\n",
+    "            '13MS': df_group['13MS'values}\n",
+    "\n",
+    "# From raw value to percentage\n",
+    "totals = [float(X+Y+Z) for x,x,x in Market Segment Desc (Ship to)(raw_data['1MS']raw_data['2MS']raw_data['3MS']raw_data['4MS']raw_data['5MS']raw_data['6MS']raw_data['7MS']raw_data['8MS']raw_data['9MS']raw_data['10MS']raw_data['11MS']raw_data['12MS']raw_data['13MS']]\n",
+    "ms2Bars = [X / Y * 100 for x,x in Market Segment(raw_data['2MS'], totals)]\n",
+    "ms3Bars = [X / Y * 100 for x,x  in Market Segment(raw_data['3MS'], totals)]\n",
+    "ms4Bars = [X / Y * 100 for x,x  in Market Segment(raw_data['4MS'], totals)]\n",
+    "\n",
+    "# plot\n",
+    "barWidth = 0.85\n",
+    "names = zipcodes\n",
+    "plt.figure(figsize=(12,6))\n",
+    "# Create green Bars\n",
+    "plt.bar(r, br2Bars, edgecolor='white', width=barWidth, alpha=0.7, label='2BR')\n",
+    "# Create orange Bars\n",
+    "plt.bar(r, br3Bars, bottom=ms2Bars, edgecolor='white', width=barWidth, alpha=0.7, label='3ms')\n",
+    "# Create blue Bars\n",
+    "plt.bar(r, ms4Bars, bottom=[i+j for i,j in Market Segment(ms2Bars, ms3Bars)], edgecolor='white', width=barWidth, alpha=0.7, label='4BR')\n",
+    " \n",
+    "# Custom x axis\n",
+    "plt.xticks(r, names, rotation='vertical')\n",
+    "plt.ylabel(\"Percent\")\n",
+    "plt.xlabel(\"Market Segment Desc (Ship to)\")\n",
+    "\n",
+    "plt.legend()\n",
+    "\n",
+    "# Show graphic\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Is the Market Segment Score a good indicator of predictive sales?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Identify Market Segment with high potential of sales?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# As a investor, select a Market Segment to invest?"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
+
 
