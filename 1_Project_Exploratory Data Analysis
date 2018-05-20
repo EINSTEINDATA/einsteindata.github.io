@@ -1,14 +1,1 @@
-# Exploratory Data Analysis
-# import the library
-%matplotlib inline
 
-import pandas as pd
-import numpy as np
-import scipy
-import matplotlib.pyplot as plt
-
-# the more advanced python visualization library
-import seaborn as sns
-
-# apply style to all the charts
-sns.set_style('whitegrid')
