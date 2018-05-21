@@ -1,3 +1,6 @@
+About HCIP
+Challenges about Data
+
 Construction HOUSING DATASET
 
 #1 Stat can: http://www.statcan.gc.ca/tables-tableaux/sum-som/l01/cst01/manuf05-eng.htm
