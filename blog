@@ -1,4 +1,0 @@
-$ cd $BLOG # $BLOG is the directory of the blog on your local machine
-$ git add . # track all modified files
-$ git commit -m "First update" # Submit all modified files with message "First update"
-$ git push origin master # Upload the submitted files to Github
